@@ -26,6 +26,7 @@ export function App() {
   const [active, setActive] = useState<ReadonlySet<ButtonId>>(new Set());
   const [last, setLast] = useState<LastPress | null>(null);
   const [focused, setFocused] = useState(() => document.hasFocus());
+  const [nudge, setNudge] = useState(false);
 
   useEffect(() => {
     const on = () => setFocused(true);
@@ -57,6 +58,7 @@ export function App() {
 
     const onDown = (e: KeyboardEvent) => {
       const hit = identify(e);
+      setNudge(false);
       setLast({ key: describeKey(e), button: hit?.button ?? null, mapping: hit?.mapping ?? null });
       if (!hit) return;
       e.preventDefault();
@@ -85,7 +87,18 @@ export function App() {
   const name = last?.button ? BUTTONS.find((b) => b.id === last.button)!.name : null;
 
   return (
-    <main className={EMBEDDED ? "embedded" : undefined} onClick={() => window.focus()}>
+    <main
+      className={EMBEDDED ? "embedded" : undefined}
+      onClick={(e) => {
+        window.focus();
+        setNudge(Boolean((e.target as Element).closest(".btn")));
+      }}
+    >
+      {EMBEDDED && (
+        <p className="embed-intro">
+          A display for a real 8BitDo Micro, not a controller. Pair the Micro with this computer in keyboard mode, click this box, then press its buttons.
+        </p>
+      )}
       {!EMBEDDED && (
         <>
           <h1>Micro Tester</h1>
@@ -94,10 +107,11 @@ export function App() {
       )}
       <Controller active={active} />
       <p className={`readout${focused ? "" : " is-waiting"}`} aria-live="polite">
-        {!focused && "Click here, then press a button."}
-        {focused && !last && "Waiting for a press."}
-        {focused && last && !name && <>Got <kbd>{last.key}</kbd>, which no Micro button sends.</>}
-        {focused && last && name && (
+        {!focused && "Click here, then press a button on your Micro."}
+        {focused && nudge && "Press the real button on your Micro. The drawing only shows what it sends."}
+        {focused && !nudge && !last && "Waiting for a press on your Micro."}
+        {focused && !nudge && last && !name && <>Got <kbd>{last.key}</kbd>, which no Micro button sends.</>}
+        {focused && !nudge && last && name && (
           <>
             <strong>{name}</strong> sent <kbd>{last.key}</kbd>, matching {MAPPING_TEXT[last.mapping!]}.
           </>

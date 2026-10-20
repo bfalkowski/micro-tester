@@ -80,3 +80,4 @@ main.embedded { padding: 8px 0 4px; max-width: none; }
 main.embedded .note { margin-bottom: 0; }
 .readout.is-waiting { color: var(--active); font-weight: 600; }
 :root[data-embed] { --bg: transparent; }
+.embed-intro { margin: 0 0 4px; color: var(--muted); font-size: 15px; }
