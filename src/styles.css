@@ -1,0 +1,71 @@
+:root {
+  --bg: #f6f6f3;
+  --text: #22252a;
+  --muted: #61656c;
+  --body: #8e9bb5;
+  --body-edge: #6f7c97;
+  --btn: #f3e3b5;
+  --btn-edge: #c9b479;
+  --grey: #737f97;
+  --active: #ff8a3d;
+  --label: #22252a;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171b;
+    --text: #e9eaec;
+    --muted: #a3a7ae;
+    --body: #4f5a70;
+    --body-edge: #687591;
+    --btn: #e3d3a6;
+    --btn-edge: #b29e64;
+    --grey: #39435a;
+    --active: #ff9a52;
+    --label: #e9eaec;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 17px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+main { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
+h1 { margin: 0 0 6px; font-size: 28px; }
+.lede, .note { color: var(--muted); margin: 0 0 20px; }
+.note { font-size: 14px; margin-top: 12px; }
+.readout { min-height: 3em; font-size: 18px; margin: 16px 0 0; }
+kbd {
+  font: 15px ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding: 1px 6px;
+  border: 1px solid var(--muted);
+  border-radius: 5px;
+}
+
+.controller { width: 100%; height: auto; display: block; overflow: visible; }
+.body { fill: var(--body); stroke: var(--body-edge); stroke-width: 3; }
+.dpad-hub { fill: var(--btn); }
+.btn > circle, .btn > rect {
+  fill: var(--btn);
+  stroke: var(--btn-edge);
+  stroke-width: 2;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 120ms ease-out, fill 120ms ease-out;
+}
+.btn-small > circle, .btn-shoulder > rect { fill: var(--grey); stroke: var(--body-edge); }
+.btn-dpad > rect { stroke: none; }
+.btn.is-active > circle, .btn.is-active > rect { fill: var(--active); transform: scale(0.88); }
+.btn-text { font: 600 16px system-ui, sans-serif; fill: #5b5030; pointer-events: none; }
+.btn-small .btn-text, .btn-shoulder .btn-text { fill: #e9eaec; }
+.btn-label { font: 500 13px system-ui, sans-serif; fill: var(--label); transition: fill 120ms ease-out; }
+.btn.is-unused .btn-label { fill: var(--muted); font-style: italic; }
+.btn.is-active .btn-label { fill: var(--active); font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn > circle, .btn > rect, .btn-label { transition: none; }
+  .btn.is-active > circle, .btn.is-active > rect { transform: none; }
+}
