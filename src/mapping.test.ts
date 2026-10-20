@@ -22,8 +22,13 @@ describe("identify", () => {
     expect(press("]", { shiftKey: true, metaKey: true })).toEqual({ button: "plus", mapping: "remapped" });
   });
 
+  it("reads Y as Cmd+Tab once remapped", () => {
+    expect(press("Tab", { metaKey: true })).toEqual({ button: "y", mapping: "remapped" });
+    expect(press("i")).toEqual({ button: "y", mapping: "default" });
+  });
+
   it("treats buttons the rule leaves alone as the same in both mappings", () => {
-    expect(press("i")).toEqual({ button: "y", mapping: "either" });
+    expect(press("k")).toEqual({ button: "extra1", mapping: "either" });
   });
 
   it("ignores keys no button sends", () => {

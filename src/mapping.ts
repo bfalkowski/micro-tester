@@ -31,7 +31,7 @@ export const BUTTONS: Button[] = [
   { id: "a", name: "A", action: "Accept", letter: "g", remapped: key("Enter") },
   { id: "b", name: "B", action: "Reject", letter: "j", remapped: key("Escape") },
   { id: "x", name: "X", action: "Commands", letter: "h", remapped: key("/") },
-  { id: "y", name: "Y", action: "Unused", letter: "i" },
+  { id: "y", name: "Y", action: "Switch app", letter: "i", remapped: (p) => p.metaKey && p.key === "Tab" },
   { id: "l", name: "L", action: "Talk", letter: "l", remapped: (p) => p.code === "AltRight" },
   { id: "r", name: "R", action: "Permission mode", letter: "r", remapped: (p) => p.key === "Tab" && p.shiftKey },
   { id: "plus", name: "Plus", action: "Next tab", letter: "o", remapped: (p) => p.metaKey && p.shiftKey && (p.key === "]" || p.key === "}") },
