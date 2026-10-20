@@ -3,6 +3,7 @@ import { Controller } from "./Controller";
 import { BUTTONS, identify, type ButtonId, type Mapping } from "./mapping";
 
 const MIN_FLASH_MS = 180;
+const EMBEDDED = new URLSearchParams(location.search).has("embed");
 
 const MAPPING_TEXT: Record<Mapping, string> = {
   default: "the Micro's default letters",
@@ -24,6 +25,26 @@ const describeKey = (e: KeyboardEvent) =>
 export function App() {
   const [active, setActive] = useState<ReadonlySet<ButtonId>>(new Set());
   const [last, setLast] = useState<LastPress | null>(null);
+  const [focused, setFocused] = useState(() => document.hasFocus());
+
+  useEffect(() => {
+    const on = () => setFocused(true);
+    const off = () => setFocused(false);
+    window.addEventListener("focus", on);
+    window.addEventListener("blur", off);
+    return () => {
+      window.removeEventListener("focus", on);
+      window.removeEventListener("blur", off);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!EMBEDDED) return;
+    const report = () => parent.postMessage({ microTesterHeight: document.documentElement.scrollHeight }, "*");
+    const ro = new ResizeObserver(report);
+    ro.observe(document.body);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const downAt = new Map<ButtonId, number>();
@@ -64,14 +85,19 @@ export function App() {
   const name = last?.button ? BUTTONS.find((b) => b.id === last.button)!.name : null;
 
   return (
-    <main>
-      <h1>Micro Tester</h1>
-      <p className="lede">Press a button on your 8BitDo Micro. Its drawing lights up, with the key it sent and what it does in Claude Code.</p>
+    <main className={EMBEDDED ? "embedded" : undefined} onClick={() => window.focus()}>
+      {!EMBEDDED && (
+        <>
+          <h1>Micro Tester</h1>
+          <p className="lede">Press a button on your 8BitDo Micro. Its drawing lights up, with the key it sent and what it does in Claude Code.</p>
+        </>
+      )}
       <Controller active={active} />
-      <p className="readout" aria-live="polite">
-        {!last && "Waiting for a press."}
-        {last && !name && <>Got <kbd>{last.key}</kbd>, which no Micro button sends.</>}
-        {last && name && (
+      <p className={`readout${focused ? "" : " is-waiting"}`} aria-live="polite">
+        {!focused && "Click here, then press a button."}
+        {focused && !last && "Waiting for a press."}
+        {focused && last && !name && <>Got <kbd>{last.key}</kbd>, which no Micro button sends.</>}
+        {focused && last && name && (
           <>
             <strong>{name}</strong> sent <kbd>{last.key}</kbd>, matching {MAPPING_TEXT[last.mapping!]}.
           </>

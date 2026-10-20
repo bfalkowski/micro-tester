@@ -12,7 +12,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-embed]) {
     --bg: #15171b;
     --text: #e9eaec;
     --muted: #a3a7ae;
@@ -75,3 +75,8 @@ kbd {
   .btn-text { font-size: 20px; }
   .btn.is-unused .btn-label { display: none; }
 }
+
+main.embedded { padding: 8px 0 4px; max-width: none; }
+main.embedded .note { margin-bottom: 0; }
+.readout.is-waiting { color: var(--active); font-weight: 600; }
+:root[data-embed] { --bg: transparent; }
