@@ -24,10 +24,10 @@ interface Button {
 const key = (k: string) => (p: KeyPress) => p.key === k;
 
 export const BUTTONS: Button[] = [
-  { id: "up", name: "Up", action: "Move up", letter: "c", remapped: key("ArrowUp") },
-  { id: "down", name: "Down", action: "Move down", letter: "d", remapped: key("ArrowDown") },
-  { id: "left", name: "Left", action: "Move left", letter: "e", remapped: key("ArrowLeft") },
-  { id: "right", name: "Right", action: "Move right", letter: "f", remapped: key("ArrowRight") },
+  { id: "up", name: "Up", action: "Up", letter: "c", remapped: key("ArrowUp") },
+  { id: "down", name: "Down", action: "Down", letter: "d", remapped: key("ArrowDown") },
+  { id: "left", name: "Left", action: "Left", letter: "e", remapped: key("ArrowLeft") },
+  { id: "right", name: "Right", action: "Right", letter: "f", remapped: key("ArrowRight") },
   { id: "a", name: "A", action: "Accept", letter: "g", remapped: key("Enter") },
   { id: "b", name: "B", action: "Reject", letter: "j", remapped: key("Escape") },
   { id: "x", name: "X", action: "Commands", letter: "h", remapped: key("/") },

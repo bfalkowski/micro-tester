@@ -69,3 +69,9 @@ kbd {
   .btn > circle, .btn > rect, .btn-label { transition: none; }
   .btn.is-active > circle, .btn.is-active > rect { transform: none; }
 }
+
+@media (max-width: 600px) {
+  .btn-label { font-size: 17px; }
+  .btn-text { font-size: 20px; }
+  .btn.is-unused .btn-label { display: none; }
+}
